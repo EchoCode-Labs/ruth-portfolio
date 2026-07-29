@@ -1,6 +1,12 @@
 # Ruth Portfolio
 
-A modern, responsive portfolio website developed for **Ruth Chika**, a professional Virtual Assistant. This project showcases her professional experience, services, projects, and work samples through an intuitive, elegant, and responsive user interface.
+A modern, responsive portfolio website developed for **Ruth Chika**, a professional Virtual Assistant. This project showcases her professional experience, services, projects, certifications, and work samples through an elegant, accessible, and responsive user interface.
+
+---
+
+## 🌐 Live Demo
+
+**Website:** https://ruth-portfolio-va.vercel.app
 
 ---
 
@@ -8,7 +14,7 @@ A modern, responsive portfolio website developed for **Ruth Chika**, a professio
 
 The goal of this project is to establish a professional online presence that enables potential clients, employers, and collaborators to easily explore Ruth's expertise as a Virtual Assistant.
 
-The website presents her professional profile through a clean, responsive design while emphasizing usability, accessibility, and performance.
+The website presents her professional profile through a clean, responsive design while emphasizing usability, accessibility, performance, and modern web development best practices.
 
 ---
 
@@ -26,6 +32,8 @@ The website presents her professional profile through a clean, responsive design
 - Contact section
 - SEO-friendly architecture
 - Optimized performance
+- Accessible user interface
+- Fast page loading
 
 ---
 
@@ -33,12 +41,13 @@ The website presents her professional profile through a clean, responsive design
 
 | Technology | Purpose |
 |------------|---------|
-| Next.js | React Framework |
-| React | UI Development |
+| Next.js 16 | React Framework |
+| React 19 | UI Development |
 | TypeScript | Type Safety |
 | Material UI | Component Library |
 | Framer Motion | Animations |
 | CSS | Styling |
+| PNPM | Package Manager |
 
 ---
 
@@ -93,9 +102,9 @@ pnpm install
 pnpm dev
 ```
 
-Open your browser and visit:
+Open your browser:
 
-```
+```text
 http://localhost:3000
 ```
 
@@ -121,29 +130,63 @@ pnpm start
 
 This project is optimized for deployment on **Vercel**.
 
+Every push to the production branch automatically triggers a new deployment when connected to a Git provider.
+
 ---
 
 ## 📸 Preview
 
-Project screenshots will be added after deployment.
+### Home
+
+> *(Add screenshot here)*
+
+```
+screenshots/home.png
+```
+
+### About
+
+```
+screenshots/about.png
+```
+
+### Projects
+
+```
+screenshots/projects.png
+```
+
+### Contact
+
+```
+screenshots/contact.png
+```
+
+### Mobile View
+
+```
+screenshots/mobile-home.png
+```
 
 ---
 
 ## 🔮 Future Enhancements
 
-- Dark mode support
 - Testimonials section
 - Blog integration
 - Analytics integration
+- SEO improvements
 - Performance optimizations
 - Additional animations
 - Accessibility improvements
+- CMS integration
+- Contact form email service
 
 ---
 
 ## 👩 About the Portfolio Owner
 
-**Ruth Chika** is a Virtual Assistant passionate about helping businesses stay organized, productive, and efficient through professional administrative support, project coordination, documentation, scheduling, customer support, and business operations.
+**Ruth Chika** is a detail-oriented Virtual Assistant passionate about helping businesses stay organized, productive, and efficient through professional administrative support, project coordination, documentation, scheduling, customer support, and business operations.
 
 ---
 
@@ -153,7 +196,7 @@ Project screenshots will be added after deployment.
 
 Full Stack Developer
 
-Specializing in modern web applications using:
+Specializing in:
 
 - Next.js
 - React
@@ -166,7 +209,7 @@ Specializing in modern web applications using:
 
 ## 🤝 Acknowledgements
 
-Special thanks to Ruth Chika for the opportunity to design and develop her professional portfolio.
+Special thanks to **Ruth Chika** for the opportunity to design and develop her professional portfolio.
 
 ---
 
