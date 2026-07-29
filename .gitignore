@@ -102,3 +102,6 @@ temp/
 # Generated Files
 # --------------------------------------------------
 *.tgz
+
+# JetBrains IDE
+.idea/
