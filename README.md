@@ -132,42 +132,27 @@ This project is optimized for deployment on **Vercel**.
 
 Every push to the production branch automatically triggers a new deployment when connected to a Git provider.
 
----
-
 ## 📸 Preview
 
 ### Home
 
-> *(Add screenshot here)*
-
-```
-screenshots/home.png
-```
+![Home](./screenshots/home.png)
 
 ### About
 
-```
-screenshots/about.png
-```
+![About](./screenshots/about.png)
 
 ### Projects
 
-```
-screenshots/projects.png
-```
+![Projects](./screenshots/projects.png)
 
 ### Contact
 
-```
-screenshots/contact.png
-```
+![Contact](./screenshots/contact.png)
 
 ### Mobile View
 
-```
-screenshots/mobile-home.png
-```
-
+![Mobile](./screenshots/mobile-home.png)
 ---
 
 ## 🔮 Future Enhancements
