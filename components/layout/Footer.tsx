@@ -7,7 +7,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
-import ChevronMotif from "@/components/ui/ChevronMotif";
+import Logo from "@/components/ui/Logo";
 import { contactChannels, navItems, profile } from "@/data/content";
 
 export default function Footer() {
@@ -29,10 +29,7 @@ export default function Footer() {
           justifyContent="space-between"
         >
           <Stack spacing={2} sx={{ maxWidth: 340 }}>
-            <ChevronMotif direction="both" size={22} />
-            <Typography variant="h4" sx={{ color: "brand.cream" }}>
-              {profile.name}
-            </Typography>
+            <Logo tone="light" size={40} />
             <Typography variant="body2" sx={{ color: "brand.taupeLight" }}>
               {profile.tagline}
             </Typography>

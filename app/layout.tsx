@@ -27,7 +27,7 @@ const accentFont = Space_Grotesk({
   display: "swap",
 });
 
-const siteUrl = "https://ezinwokeruth.com";
+const siteUrl = "https://ruth-portfolio-va.vercel.app/";
 const siteTitle = `${profile.name} — ${profile.role}`;
 const siteDescription = `${profile.tagline} ${profile.bio}`;
 
@@ -56,7 +56,7 @@ export const metadata: Metadata = {
     siteName: siteTitle,
     images: [
       {
-        url: "/images/hero-portrait.svg",
+        url: "/images/hero-portrait.jpeg",
         width: 880,
         height: 1100,
         alt: siteTitle,
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: siteTitle,
     description: profile.tagline,
-    images: ["/images/hero-portrait.svg"],
+    images: ["/images/hero-portrait.jpeg"],
   },
   robots: {
     index: true,

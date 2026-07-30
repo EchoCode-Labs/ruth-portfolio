@@ -16,10 +16,18 @@ interface MediaCarouselProps {
   items: CarouselItem[];
   /** Milliseconds between auto-advances. */
   autoPlayInterval?: number;
-  /** Roughly how wide each slide is, before it's clamped to the viewport. */
+  /** Every slide shares this width (clamped to the viewport on small screens). */
   slideWidth?: number;
-  /** Image aspect ratio for every slide, e.g. "16 / 10". */
+  /** Every slide shares this aspect ratio too — a uniform card size across the whole row. */
   aspectRatio?: string;
+  /**
+   * How each image fills its frame. Use "contain" (default) when the media
+   * has text/UI right up to the edges (app screenshots) — nothing gets
+   * cropped, at the cost of a little matting for mismatched ratios. Use
+   * "cover" when the media is forgiving of a slight edge-crop (marketing
+   * graphics, flyers) and you want every frame filled edge-to-edge.
+   */
+  objectFit?: "contain" | "cover";
 }
 
 const GAP_PX = 20;
@@ -30,7 +38,8 @@ export default function MediaCarousel({
   items,
   autoPlayInterval = 4000,
   slideWidth = 420,
-  aspectRatio = "16 / 10",
+  aspectRatio = "4 / 3",
+  objectFit = "contain",
 }: MediaCarouselProps) {
   const scrollerRef = useRef<HTMLDivElement | null>(null);
   const firstItemRef = useRef<HTMLDivElement | null>(null);
@@ -40,9 +49,55 @@ export default function MediaCarousel({
   const dragStartScrollLeftRef = useRef(0);
   const autoScrollingRef = useRef(false);
   const resumeTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const scrollSettleTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [touchPaused, setTouchPaused] = useState(false);
 
-  // Auto-advance loop
+  // Looping needs at least 2 items to duplicate. With a single item there's
+  // nothing to loop around, so we fall back to the plain, unlooped strip.
+  const loopEnabled = items.length > 1;
+  // Three copies back-to-back: a "previous" and "next" buffer around the
+  // copy the person actually looks at, so dragging or auto-scrolling in
+  // either direction always has more (identical) content ahead of it.
+  const displayItems = loopEnabled ? [...items, ...items, ...items] : items;
+  // Width of exactly one copy of the sequence, in px.
+  const singleSetWidthRef = useRef(0);
+
+  // Measure the strip and start centered in the middle copy.
+  useEffect(() => {
+    if (!loopEnabled) return;
+    const scroller = scrollerRef.current;
+    if (!scroller) return;
+
+    const measure = () => {
+      singleSetWidthRef.current = scroller.scrollWidth / 3;
+    };
+
+    measure();
+    scroller.scrollLeft = singleSetWidthRef.current;
+
+    const resizeObserver = new ResizeObserver(measure);
+    resizeObserver.observe(scroller);
+    return () => resizeObserver.disconnect();
+  }, [loopEnabled, items.length, slideWidth]);
+
+  // Silently shift the scroll position by one copy-width whenever it drifts
+  // outside the middle copy. Because all three copies are pixel-identical,
+  // this correction is invisible — there's nothing to "see" jump.
+  const normalizeScroll = () => {
+    if (!loopEnabled || isDraggingRef.current) return;
+    const scroller = scrollerRef.current;
+    const singleWidth = singleSetWidthRef.current;
+    if (!scroller || !singleWidth) return;
+
+    if (scroller.scrollLeft >= singleWidth * 2) {
+      scroller.scrollLeft -= singleWidth;
+    } else if (scroller.scrollLeft < singleWidth) {
+      scroller.scrollLeft += singleWidth;
+    }
+  };
+
+  // Auto-advance loop — always scrolls forward; normalizeScroll() handles
+  // wrapping back into the middle copy once the smooth-scroll settles.
   useEffect(() => {
     if (items.length <= 1) return;
 
@@ -51,21 +106,16 @@ export default function MediaCarousel({
       if (!scroller || isHovering || touchPaused || isDraggingRef.current) return;
 
       const step = (firstItemRef.current?.offsetWidth ?? slideWidth) + GAP_PX;
-      const maxScrollLeft = scroller.scrollWidth - scroller.clientWidth;
-      const nextLeft = scroller.scrollLeft + step;
-
       autoScrollingRef.current = true;
-      if (nextLeft >= maxScrollLeft - 4) {
-        scroller.scrollTo({ left: 0, behavior: "smooth" });
-      } else {
-        scroller.scrollBy({ left: step, behavior: "smooth" });
-      }
+      scroller.scrollBy({ left: step, behavior: "smooth" });
       window.setTimeout(() => {
         autoScrollingRef.current = false;
+        normalizeScroll();
       }, AUTO_SCROLL_SETTLE_MS);
     }, autoPlayInterval);
 
     return () => clearInterval(intervalId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items.length, isHovering, touchPaused, autoPlayInterval, slideWidth]);
 
   const scheduleTouchResume = () => {
@@ -97,6 +147,7 @@ export default function MediaCarousel({
     const scroller = scrollerRef.current;
     isDraggingRef.current = false;
     if (scroller) scroller.style.cursor = "grab";
+    normalizeScroll();
   };
 
   const handleTouchStart = () => {
@@ -106,11 +157,21 @@ export default function MediaCarousel({
 
   const handleTouchEnd = () => {
     scheduleTouchResume();
+    normalizeScroll();
+  };
+
+  // Fallback for any scroll not covered above (trackpad, mouse wheel, touch
+  // momentum that continues after touchend): once scrolling has been idle
+  // for a moment, check and correct the position.
+  const handleNativeScroll = () => {
+    if (scrollSettleTimeoutRef.current) clearTimeout(scrollSettleTimeoutRef.current);
+    scrollSettleTimeoutRef.current = setTimeout(normalizeScroll, 120);
   };
 
   useEffect(() => {
     return () => {
       if (resumeTimeoutRef.current) clearTimeout(resumeTimeoutRef.current);
+      if (scrollSettleTimeoutRef.current) clearTimeout(scrollSettleTimeoutRef.current);
     };
   }, []);
 
@@ -126,6 +187,7 @@ export default function MediaCarousel({
       onPointerCancel={endDrag}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onScroll={handleNativeScroll}
       sx={{
         display: "flex",
         gap: `${GAP_PX}px`,
@@ -136,12 +198,15 @@ export default function MediaCarousel({
         // Hide the scrollbar; the carousel is navigated by drag/swipe/autoplay.
         scrollbarWidth: "none",
         "&::-webkit-scrollbar": { display: "none" },
-        pb: 0.5,
+        // Give the hover-lift effect on each slide room to breathe without clipping.
+        py: 1,
+        px: 0.5,
+        mx: -0.5,
       }}
     >
-      {items.map((item, index) => (
+      {displayItems.map((item, index) => (
         <Stack
-          key={item.src}
+          key={`${item.src}-${index}`}
           ref={index === 0 ? firstItemRef : undefined}
           spacing={1.5}
           sx={{
@@ -154,12 +219,18 @@ export default function MediaCarousel({
               position: "relative",
               width: "100%",
               aspectRatio,
-              borderRadius: 3,
+              borderRadius: 4,
               overflow: "hidden",
-              border: "2px solid",
-              borderColor: "brand.taupeLight",
-              boxShadow: "0 16px 32px -20px rgba(36, 24, 17, 0.4)",
+              border: "3px solid",
+              borderColor: "brand.taupe",
+              boxShadow: "0 20px 40px -22px rgba(36, 24, 17, 0.45)",
               bgcolor: "brand.taupeSoft",
+              transition: "transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease",
+              "&:hover": {
+                transform: "translateY(-6px)",
+                boxShadow: "0 28px 48px -20px rgba(36, 24, 17, 0.55)",
+                borderColor: "brand.taupeDark",
+              },
             }}
           >
             <Image
@@ -168,11 +239,11 @@ export default function MediaCarousel({
               fill
               draggable={false}
               sizes="(max-width: 600px) 85vw, 420px"
-              style={{ objectFit: "contain", pointerEvents: "none" }}
+              style={{ objectFit, pointerEvents: "none" }}
             />
           </Box>
           {item.caption ? (
-            <Typography variant="body2" color="text.secondary">
+            <Typography variant="body2" color="text.secondary" sx={{ px: 0.5 }}>
               {item.caption}
             </Typography>
           ) : null}

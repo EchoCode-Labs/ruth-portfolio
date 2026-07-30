@@ -2,18 +2,16 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ReactNode } from "react";
-import Box from "@mui/material/Box";
+import Box, { type BoxProps } from "@mui/material/Box";
 
 interface ScrollRevealProps {
   children: ReactNode;
-  /** Delay before the entrance animation starts, in ms. */
   delay?: number;
-  /** Distance (px) the content travels upward as it appears. */
   distance?: number;
-  /** Fraction of the element that must be visible before it triggers. */
   threshold?: number;
-  /** Animate every time it re-enters the viewport, instead of just once. */
   repeat?: boolean;
+  /** Optional style overrides/additions for the wrapping Box, e.g. height: "100%" */
+  sx?: BoxProps["sx"];
 }
 
 export default function ScrollReveal({
@@ -22,6 +20,7 @@ export default function ScrollReveal({
   distance = 24,
   threshold = 0.15,
   repeat = false,
+  sx,
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const [visible, setVisible] = useState(false);
@@ -54,6 +53,7 @@ export default function ScrollReveal({
         transform: visible ? "translateY(0)" : `translateY(${distance}px)`,
         transition: `opacity 0.7s ease ${delay}ms, transform 0.7s ease ${delay}ms`,
         willChange: "opacity, transform",
+        ...sx,
       }}
     >
       {children}

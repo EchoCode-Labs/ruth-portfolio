@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
@@ -17,6 +18,7 @@ import ListItemText from "@mui/material/ListItemText";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ThemeToggle from "@/components/ui/ThemeToggle";
+import Logo from "@/components/ui/Logo";
 import { navItems, profile } from "@/data/content";
 
 export default function Header() {
@@ -27,18 +29,14 @@ export default function Header() {
     <AppBar position="sticky" component="header">
       <Container maxWidth="lg">
         <Toolbar disableGutters sx={{ py: 1.5, justifyContent: "space-between" }}>
-          <Typography
+          <Box
             component={NextLink}
             href="/"
-            variant="h6"
-            sx={{
-              textDecoration: "none",
-              color: "text.primary",
-              letterSpacing: "0.02em",
-            }}
+            aria-label="Ruth Chika home"
+            sx={{ display: "inline-flex", textDecoration: "none", color: "inherit" }}
           >
-            Ruth Chika
-          </Typography>
+            <Logo />
+          </Box>
 
           <Stack
             direction="row"

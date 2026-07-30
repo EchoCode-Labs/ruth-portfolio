@@ -34,6 +34,8 @@ export interface CaseStudy {
   tools: string[];
   contributions: string[];
   media: ProjectMedia[];
+  mediaAspectRatio: string;
+  mediaObjectFit: "contain" | "cover";
 }
 
 export interface DesignSample {

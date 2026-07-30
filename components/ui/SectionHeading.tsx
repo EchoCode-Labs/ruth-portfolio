@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import PillBadge from "./PillBadge";
+import ScrollReveal from "./ScrollReveal";
 
 interface SectionHeadingProps {
   eyebrow?: string;
@@ -26,14 +27,22 @@ export default function SectionHeading({
         mx: align === "center" ? "auto" : 0,
       }}
     >
-      {eyebrow ? <PillBadge>{eyebrow}</PillBadge> : null}
-      <Typography variant="h2" component="h2">
-        {title}
-      </Typography>
-      {lede ? (
-        <Typography variant="subtitle1" color="text.secondary">
-          {lede}
+      {eyebrow ? (
+        <ScrollReveal distance={12}>
+          <PillBadge>{eyebrow}</PillBadge>
+        </ScrollReveal>
+      ) : null}
+      <ScrollReveal delay={80} distance={16}>
+        <Typography variant="h2" component="h2">
+          {title}
         </Typography>
+      </ScrollReveal>
+      {lede ? (
+        <ScrollReveal delay={160} distance={16}>
+          <Typography variant="subtitle1" color="text.secondary">
+            {lede}
+          </Typography>
+        </ScrollReveal>
       ) : null}
     </Stack>
   );

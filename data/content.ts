@@ -147,6 +147,11 @@ export const caseStudies: CaseStudy[] = [
       "Drafted three template responses for common inquiries",
       "Created a contact list to keep a record of customers' information",
     ],
+    // All-landscape app screenshots — a tighter ratio than the page default,
+    // paired with "contain" since it already matches closely (near-zero
+    // matting) rather than needing any cropping.
+    mediaAspectRatio: "3 / 2",
+    mediaObjectFit: "contain",
     media: [
       {
         src: "/images/projects/calendar-management.jpeg",
@@ -185,6 +190,14 @@ export const caseStudies: CaseStudy[] = [
       "Built a 1-page content strategy",
       "Developed professional meeting minutes capturing key decisions, actions, and next steps",
     ],
+    // Mostly portrait/square marketing graphics — "cover" fills every frame
+    // edge-to-edge. Note: this will crop a bit off the sides of the portrait
+    // pieces (Instagram carousel, webinar flyer) to match this landscape
+    // ratio. Preview after this change — if any headline/logo/CTA text gets
+    // cut off near the edges, either bump mediaAspectRatio narrower here
+    // (e.g. "4 / 5") or re-export those two graphics with a bit more margin.
+    mediaAspectRatio: "4 / 3",
+    mediaObjectFit: "cover",
     media: [
       {
         src: "/images/projects/trello-board.png",
@@ -221,13 +234,13 @@ export const faqs = [
       "Small business owners and founders — especially those who need help staying on top of email, scheduling, content, and day-to-day operations so they can focus on growth.",
   },
   {
-    question: "What tools do you already work in?",
-    answer:
-      "Google Workspace, Gmail, Slack, Asana, Trello, Notion, Monday.com, Calendly, Zoom, Google Meet, and Canva — see the full list on the About page.",
-  },
-  {
     question: "How quickly do you respond?",
     answer:
       "Within 24 hours for email and typically much sooner for urgent requests.",
+  },
+  {
+    question: "What tools do you already work in?",
+    answer:
+      "Google Workspace, Gmail, Slack, Asana, Trello, Notion, Monday.com, Calendly, Zoom, Google Meet, and Canva — see the full list on the About page.",
   },
 ];
