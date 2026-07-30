@@ -25,10 +25,10 @@ export default function ServicePillars() {
           />
         </ScrollReveal>
 
-        <Grid container spacing={3}>
+        <Grid container spacing={3} alignItems="stretch">
           {skillGroups.map((group, index) => (
             <Grid key={group.title} size={{ xs: 12, sm: 6, lg: 3 }}>
-              <ScrollReveal delay={index * 100} distance={18}>
+              <ScrollReveal delay={index * 100} distance={18} sx={{ height: "100%" }}>
                 <Card sx={{ height: "100%" }}>
                   <CardContent sx={{ p: 3.5 }}>
                     <Stack spacing={1.5}>
