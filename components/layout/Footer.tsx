@@ -7,6 +7,7 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import Divider from "@mui/material/Divider";
+import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
 import Logo from "@/components/ui/Logo";
 import { contactChannels, navItems, profile } from "@/data/content";
 
@@ -33,6 +34,21 @@ export default function Footer() {
             <Typography variant="body2" sx={{ color: "brand.taupeLight" }}>
               {profile.tagline}
             </Typography>
+            <Link
+              href={profile.cvFile}
+              download
+              underline="hover"
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 0.75,
+                color: "brand.cream",
+                fontWeight: 600,
+              }}
+            >
+              <DownloadRoundedIcon fontSize="small" />
+              Download CV
+            </Link>
           </Stack>
 
           <Stack spacing={1.5}>

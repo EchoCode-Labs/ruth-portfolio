@@ -17,6 +17,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemText from "@mui/material/ListItemText";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
+import DownloadRoundedIcon from "@mui/icons-material/DownloadRounded";
 import ThemeToggle from "@/components/ui/ThemeToggle";
 import Logo from "@/components/ui/Logo";
 import { navItems, profile } from "@/data/content";
@@ -62,6 +63,15 @@ export default function Header() {
                 </Button>
               );
             })}
+            <Button
+              href={profile.cvFile}
+              download
+              variant="outlined"
+              size="medium"
+              startIcon={<DownloadRoundedIcon fontSize="small" />}
+            >
+              CV
+            </Button>
             <Button
               component={NextLink}
               href="/contact"
@@ -110,15 +120,26 @@ export default function Header() {
               </ListItemButton>
             ))}
           </List>
-          <Button
-            component={NextLink}
-            href="/contact"
-            variant="contained"
-            color="primary"
-            onClick={() => setOpen(false)}
-          >
-            Hire me
-          </Button>
+          <Stack spacing={1.5}>
+            <Button
+              component={NextLink}
+              href="/contact"
+              variant="contained"
+              color="primary"
+              onClick={() => setOpen(false)}
+            >
+              Hire me
+            </Button>
+            <Button
+              href={profile.cvFile}
+              download
+              variant="outlined"
+              startIcon={<DownloadRoundedIcon fontSize="small" />}
+              onClick={() => setOpen(false)}
+            >
+              Download CV
+            </Button>
+          </Stack>
         </Stack>
       </Drawer>
     </AppBar>

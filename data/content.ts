@@ -15,7 +15,15 @@ export const profile = {
   closingStatement:
     "I bring organization, clear communication, and reliable follow-through to every task, from content planning to admin support. Ready to help your business run smoother.",
   location: "Lagos, Nigeria",
+  cvFile: "/documents/ezinwoke-ruth-chika-cv.pdf",
+  availability: "Available for new projects",
 } as const;
+
+export const heroStats: { value: string; label: string }[] = [
+  { value: "1", label: "Live client project" },
+  { value: "2", label: "Case studies documented" },
+  { value: "<24h", label: "Typical response time" },
+];
 
 export const navItems: NavItem[] = [
   { label: "Home", href: "/" },
